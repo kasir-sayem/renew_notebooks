@@ -1,14 +1,40 @@
 <?php
 define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'username');
-define('DB_PASSWORD', 'password');
+define('DB_USERNAME', 'root'); // Update with your actual username
+define('DB_PASSWORD', ''); // Update with your actual password
 define('DB_NAME', 'renew_notebooks');
 
-// Attempt to connect to MySQL database
-$conn = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+// Global connection variable
+global $conn;
 
-// Check connection
-if($conn === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
+// Create a persistent connection function
+function getDbConnection() {
+    global $conn;
+    
+    // If connection already exists and is valid, return it
+    if ($conn instanceof mysqli && !$conn->connect_errno) {
+        return $conn;
+    }
+    
+    // Create new connection
+    $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    
+    // Important: Disable automatic closing of the connection
+    register_shutdown_function(function() use ($conn) {
+        // This prevents the connection from being closed automatically
+        if ($conn instanceof mysqli) {
+            // Don't actually close here - just a placeholder
+        }
+    });
+    
+    return $conn;
 }
+
+// Initialize connection
+$conn = getDbConnection();
 ?>

@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 // Check if user is logged in
@@ -7,7 +11,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
+require_once 'assets/tcpdf/tcpdf.php';
 require_once "config/db_config.php";
+require_once 'vendor/autoload.php';
 
 // Get data for form dropdowns
 $manufacturers_sql = "SELECT DISTINCT manufacturer FROM notebook ORDER BY manufacturer";

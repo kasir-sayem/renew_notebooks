@@ -35,55 +35,56 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Prepare a select statement
         $sql = "SELECT id, username, password, role FROM users WHERE username = ?";
         
-        if($stmt = mysqli_prepare($conn, $sql)){
+        if($stmt = $conn->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            $stmt->bind_param("s", $param_username);
             
             // Set parameters
             $param_username = $username;
             
             // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
+            if($stmt->execute()){
                 // Store result
-                mysqli_stmt_store_result($stmt);
+                $stmt->store_result();
                 
                 // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
+                if($stmt->num_rows == 1){                    
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $role);
-                    if(mysqli_stmt_fetch($stmt)){
+                    $stmt->bind_result($id, $db_username, $hashed_password, $role);
+                    
+
+                    if($stmt->fetch()){
+                        // Verify password
                         if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
+                            // Password is correct, start a new session
                             session_start();
                             
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;
+                            $_SESSION["username"] = $db_username;
                             $_SESSION["role"] = $role;                            
                             
                             // Redirect user to welcome page
                             header("location: ../index.php");
+                            exit;
                         } else{
-                            // Password is not valid, display a generic error message
+                            // Password is not valid
                             $login_err = "Invalid username or password.";
                         }
                     }
                 } else{
-                    // Username doesn't exist, display a generic error message
+                    // Username doesn't exist
                     $login_err = "Invalid username or password.";
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                $login_err = "Oops! Something went wrong. Please try again later.";
             }
 
             // Close statement
-            mysqli_stmt_close($stmt);
+            $stmt->close();
         }
     }
-    
-    // Close connection
-    mysqli_close($conn);
 }
 ?>
 
