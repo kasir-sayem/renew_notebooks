@@ -24,17 +24,17 @@ function getDbConnection() {
         die("Connection failed: " . $conn->connect_error);
     }
     
-    // Important: Disable automatic closing of the connection
+    
     register_shutdown_function(function() use ($conn) {
         // This prevents the connection from being closed automatically
         if ($conn instanceof mysqli) {
-            // Don't actually close here - just a placeholder
+            
         }
     });
     
     return $conn;
 }
 
-// Initialize connection
+
 $conn = getDbConnection();
 ?>
