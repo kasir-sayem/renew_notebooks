@@ -1,12 +1,12 @@
 <?php
 function getMenuItems($conn, $parentId = null, $userRole = 'visitor') {
-    // Check if connection is valid
+    
     if (!$conn || $conn->connect_errno) {
-        // Try to get a fresh connection
+        
         require_once __DIR__ . "/../config/db_config.php";
         $conn = getDbConnection();
         
-        // If still not working, return empty menu
+        
         if (!$conn || $conn->connect_errno) {
             return [];
         }
@@ -31,7 +31,7 @@ function getMenuItems($conn, $parentId = null, $userRole = 'visitor') {
             $result = $stmt->get_result();
             
             while ($row = $result->fetch_assoc()) {
-                // Check if user has permission to see this menu item
+                
                 if (hasPermission($userRole, $row['role_required'])) {
                     $item = $row;
                     $children = getMenuItems($conn, $row['id'], $userRole);
@@ -43,7 +43,7 @@ function getMenuItems($conn, $parentId = null, $userRole = 'visitor') {
             }
         }
     } catch (Exception $e) {
-        // Error handling - just return empty array
+        
         return [];
     }
     
@@ -75,14 +75,14 @@ function getCorrectPath($path) {
     // Base path to the project
     $projectPath = 'renew-notebooks';
     
-    // Find position of project path in the current URL
+    
     $pos = strpos($currentPath, $projectPath);
     if ($pos === false) {
         // Fallback if project path not found
         return $path;
     }
     
-    // Count directory depth after the project root
+    
     $relevantPath = substr($currentPath, $pos + strlen($projectPath));
     $depth = substr_count($relevantPath, '/');
     
