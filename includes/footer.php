@@ -17,9 +17,9 @@
                 <h5>Contact</h5>
                 <address>
                     <p>123 Computer Street<br>
-                    Capital City<br>
+                    Bangladesh<br>
                     Nowhereland</p>
-                    <p>Email: info@renew-notebooks.com<br>
+                    <p>Email: kasir@renew-notebooks.com<br>
                     Phone: +1 234 567 890</p>
                 </address>
             </div>
