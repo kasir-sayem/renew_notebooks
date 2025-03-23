@@ -40,9 +40,7 @@ $rowCount = 0;
 $successCount = 0;
 $errorCount = 0;
 
-// Optional: empty the table first
-// $conn->query("TRUNCATE TABLE notebook");
-// $conn->query("ALTER TABLE notebook AUTO_INCREMENT = 1");
+
 
 for ($i = 1; $i < count($lines); $i++) {
     if (empty(trim($lines[$i]))) {

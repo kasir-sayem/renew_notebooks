@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Check if user is logged in and is admin
+
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["role"] !== "admin") {
     header("location: ../auth/login.php");
     exit;
@@ -26,7 +26,7 @@ $os_count_sql = "SELECT COUNT(*) as count FROM opsystem";
 $os_count_result = $conn->query($os_count_sql);
 $os_count = $os_count_result->fetch_assoc()['count'];
 
-// Recent notebooks
+
 $recent_notebooks_sql = "SELECT n.*, p.manufacturer AS processor_manufacturer, p.type AS processor_type, o.osname 
                          FROM notebook n 
                          JOIN processor p ON n.processorid = p.id 

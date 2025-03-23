@@ -4,7 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Make sure we have a valid db connection
+
 require_once __DIR__ . "/../config/db_config.php";
 $conn = getDbConnection();
 

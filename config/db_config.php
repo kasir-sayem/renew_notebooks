@@ -11,12 +11,12 @@ global $conn;
 function getDbConnection() {
     global $conn;
     
-    // If connection already exists and is valid, return it
+    
     if ($conn instanceof mysqli && !$conn->connect_errno) {
         return $conn;
     }
     
-    // Create new connection
+    
     $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
     
     // Check connection
@@ -24,17 +24,17 @@ function getDbConnection() {
         die("Connection failed: " . $conn->connect_error);
     }
     
-    // Important: Disable automatic closing of the connection
+    
     register_shutdown_function(function() use ($conn) {
         // This prevents the connection from being closed automatically
         if ($conn instanceof mysqli) {
-            // Don't actually close here - just a placeholder
+            
         }
     });
     
     return $conn;
 }
 
-// Initialize connection
+
 $conn = getDbConnection();
 ?>
